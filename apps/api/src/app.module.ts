@@ -3,8 +3,9 @@ import { AuthModule } from './modules/auth/auth.module.js';
 import { UserModule } from './modules/users/user.module.js';
 import { CreatorModule } from './modules/creators/creator.module.js';
 import { WalletModule } from './modules/wallet/wallet.module.js';
+import { TipModule } from './modules/tips/tip.module.js';
 
 @Module({
-  imports: [AuthModule, UserModule, CreatorModule, WalletModule],
+  imports: [AuthModule, UserModule, CreatorModule, WalletModule, TipModule],
 })
 export class AppModule {}
