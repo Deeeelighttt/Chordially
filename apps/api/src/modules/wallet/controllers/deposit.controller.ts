@@ -1,41 +1,21 @@
-import type { NextFunction, Request, Response } from "express"
-import { depositService } from "../services/deposit.service.js"
-import { createDepositSchema } from "../validators/deposit.validators.js"
+import { Controller, Get, Post, Req, Res, Next } from '@nestjs/common';
+import type { Request, Response, NextFunction } from 'express';
+import { depositController as legacyDepositController } from './deposit.controller.legacy.js';
 
-export const depositController = {
-  async create(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const userId = req.userId!
-      const input = createDepositSchema.parse(req.body)
+@Controller('wallet/deposits')
+export class DepositController {
+  @Post()
+  async create(@Req() req: Request, @Res() res: Response, @Next() next: NextFunction) {
+    return legacyDepositController.create(req, res, next);
+  }
 
-      const deposit = await depositService.initiateDeposit(userId, input.assetCode)
+  @Get()
+  async list(@Req() req: Request, @Res() res: Response, @Next() next: NextFunction) {
+    return legacyDepositController.list(req, res, next);
+  }
 
-      res.status(201).json(deposit)
-    } catch (error) {
-      next(error)
-    }
-  },
-
-  async list(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const userId = req.userId!
-      const deposits = await depositService.listDepositsForUser(userId)
-      res.status(200).json(deposits)
-    } catch (error) {
-      next(error)
-    }
-  },
-
-  async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const userId = req.userId!
-      const { id } = req.params
-
-      const deposit = await depositService.refreshDepositStatus(userId, id!)
-
-      res.status(200).json(deposit)
-    } catch (error) {
-      next(error)
-    }
-  },
+  @Get(':id')
+  async getById(@Req() req: Request, @Res() res: Response, @Next() next: NextFunction) {
+    return legacyDepositController.getById(req, res, next);
+  }
 }
