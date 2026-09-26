@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-// Feature modules will be added here
+import { AuthModule } from './modules/auth/auth.module.js';
 
 @Module({
-  imports: [],
+  imports: [AuthModule],
 })
 export class AppModule {}
